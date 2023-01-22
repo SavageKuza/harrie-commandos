@@ -1,0 +1,219 @@
+SELECT … FROM …
+
+Er wordt iets uit een tabel 
+geselecteerd
+
+
+Voorbeeld:
+SELECT naam FROM patient;
+
+------------------------------
+
+SELECT * FROM …
+
+Alles wordt uit een tabel 
+geselecteerd en getoond
+
+
+Voorbeeld:
+SELECT * FROM patient;
+
+----------------------------
+
+SELECT DISTINCT … FROM …
+
+Het attribuut wordt uit een
+tabel geselecteerd en is
+uniek als resultaat
+
+
+Voorbeeld:
+SELECT DISTINCT naam
+FROM patient;
+
+------------------------------
+
+SELECT … AS … FROM …
+
+Het attribuut wordt uit een
+tabel geselecteerd en krijgt
+bepaald label
+
+Voorbeeld:
+SELECT naam AS patientnaam
+FROM patient;
+
+-------------------------------
+
+SELECT … AS … FROM …
+
+Het attribuut wordt uit een
+tabel geselecteerd en krijgt
+bepaald label
+
+Voorbeeld:
+SELECT naam AS patientnaam
+FROM patient;
+
+---------------------------------
+
+SELECT … FROM … 
+WHERE … = “…”
+
+Het attribuut wordt uit een
+tabel geselecteerd waarvoor 
+geldt dat het gelijk is aan iets
+
+Voorbeeld:
+SELECT naam FROM patient
+WHERE plaats = “Enschede”;
+
+---------------------------------
+SELECT … FROM … 
+ORDER BY … (DESC of ASC)
+
+Het attribuut wordt gesortereert. 
+Standaard oplopend (ASC)
+DESC is aflopend 
+
+Voorbeeld:
+SELECT naam FROM patient
+WHERE plaats = “Enschede”
+ORDER BY naam DESC;
+
+---------------------------------
+
+>	Groter dan
+<	Kleiner dan
+>=	Groter of gelijk aan	
+<=	Kleiner of gelijk aan
+<>	Ongelijk aan
+
+Voorbeeld:
+SELECT naam FROM patient
+WHERE patnr >= 5;
+
+-----------------------------------
+
+… LIKE ‘…’ (jokerteken %) 
+
+Wordt gebruikt om naar een speciale 
+waarde te kijken. Zoals begint met een S
+
+
+Voorbeeld:
+SELECT naam FROM verpleeg
+WHERE plaats LIKE ‘%dam%’;
+
+-------------------------------------
+
+NOT … 	(bijv. IS NOT NULL 
+		of NOT LIKE 
+		of NOT BETWEEN)
+
+Inventeert de functie die erachter staat
+(omdraaien)
+
+Voorbeeld:
+SELECT naam FROM verpleeg
+WHERE naam NOT LIKE ‘S%’;
+
+------------------------------------
+
+AND … 	EN
+OR …		OF
+
+Zijn operators die een conditie opleggen
+Conditie 1 AND conditie 2
+Conditie 1 OR conditie 2
+
+Voorbeeld:
+SELECT naam FROM medicijn
+WHERE tarief = 1.5 OR maxd = 5;
+
+---------------------------------------
+
+… BETWEEN … AND …
+Controleert of een attribuut tussen 
+Bijv. 2 getallen zit.
+
+
+Voorbeeld:
+SELECT naam FROM medicijn
+WHERE tarief BETWEEN 1.5 AND 5
+
+------------------------------------
+
+We gebruiken update om gegevens in een tabel te wijzigen
+
+UPDATE klant
+SET straat= “trompstraat 21”, “postcode= 1188LN”
+WHERE klant.id  = 5;
+
+------------------------------------------
+
+Met insert kan je nieuwe rijen toevoegen
+
+INSERT INTO klant (voornaam, achternaam)
+VALUES  (“Jeff”, “Zwijsen”)
+
+------------------------------------------
+
+Delete verwijdert rijen
+
+DELETE FROM Klant
+WHERE Klant.voornaam = “Jeff”
+
+----------------------------------------
+
+Voor een attribuut zet je altijd de tabelnaam
+Dan weet SQL uit welke tabel het attribuut komt
+
+Bijv.
+SELECT patient.naam, special.naam FROM …
+
+-------------------------------------------
+
+… INNER JOIN … ON …
+
+Koppeling tussen 2 tabellen
+Op basis van de overeenkomende
+sleutels.
+
+Zie 
+SQL OverzichtTabellenRelaties.doc
+
+------------------------------------------
+Voorbeeld
+
+SELECT patient.naam, opnames.reden FROM patient
+INNER JOIN opnames ON patient.patnr = opnames.patnr;
+
+------------------------------------------
+
+https://cdn.discordapp.com/attachments/859870782548606990/1066766878174888067/image.png
+
+-------------------------------------------
+
+Meerdere INNER JOINs gebruiken? Zet het tussen (  )
+SELECT patient.naam, opnames.reden, special.naam FROM (patient
+INNER JOIN opnames ON patient.patnr = opnames.patnr)
+INNER JOIN special ON opnames.specnr = special.specnr;
+
+https://cdn.discordapp.com/attachments/859870782548606990/1066767018310783037/image.png
+
+------------------------------------------
+
+Bijv. met WHERE etc.
+SELECT patient.naam, opnames.reden, special.naam FROM (patient
+INNER JOIN opnames ON patient.patnr = opnames.patnr)
+INNER JOIN special ON opnames.specnr = special.specnr
+WHERE special.plaats = "Enschede"
+ORDER BY patient.naam;
+
+https://cdn.discordapp.com/attachments/859870782548606990/1066767306723692554/image.png
+
+-------------------------------------------
+
+
+
