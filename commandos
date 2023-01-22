@@ -1,0 +1,330 @@
+CTRL+SHIFT+6 om uit translating te komen
+IN P_MLS
+Conf
+term
+int range g1/0/1 – g1/0/5 
+no sh
+switchport mode trunk
+switchport trunk native vlan 99
+
+SWITCH 1, 2, 3, 4, 5 (switch 5 handmatig doen)
+Enable
+Conf term
+int range fa 0/23 - fa 0/24
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+exit
+int g0/1 
+switchport mode trunk
+switchport trunk native vlan 99
+
+IN P_MLS
+Enable
+conf term
+vlan 10
+name vlan10
+vlan 20
+name vlan20
+vlan 30
+name vlan30
+vlan 40
+name vlan40
+vlan 50
+name vlan50
+vlan 99
+name vlan99
+
+Enable (als er geen # is)
+conf term
+vtp vers 2
+vtp domain (naam van die domein)
+vtp mode server
+
+SWITCH 1, 2, 3, 4, 5
+Enable
+conf term
+vtp mode client
+vtp domain Pinkeltje
+
+IN MLS
+Enable (als hij uit is)
+conf term
+spanning-tree vlan 1-100 root primary
+spanning-tree vlan 1-100 priority 4096
+SWITCH 1, 2, 3, 4, 5
+
+Enable
+conf term
+spanning-tree vlan 1-100 priority 8192, 12288, 16384, 20480, 24576  (nummers zijn prioriteit per switch)
+
+SWITCH 1, 2, 3, 4, 5
+Enable
+conf term
+int range fa 0/1 - fa 0/5
+description vlan 10
+switchport mode access
+switchport access vlan 10 
+int range fa 0/6 - fa 0/14
+description vlan 20
+switchport mode access
+switchport access vlan 20
+int range fa 0/15 - fa 0/18
+description vlan 30
+switchport mode access
+switchport access vlan 30
+int fa 0/19
+description vlan 40
+switchport mode access
+switchport access vlan 40
+int g 0/2 
+description vlan 50
+switchport mode access
+switchport access vlan 50
+int range fa 0/20 - fa 0/22
+description vlan 99
+switchport mode access
+switchport access vlan 99
+end
+(DUNNE - NIET LANGE ((((-)))) STREEP 
+
+Switch 1
+Access point naar fa 0/5
+Printer naar fa 0/4
+
+Switch 2 
+Access point fa0/14
+printer fa0/13
+
+Switch 3
+Access point fa 0/18
+Printer fa 0/17
+
+Switch 4
+Voeg PC (kan op examen anders zijn) toe en fa 0/19
+
+Switch 5
+Voeg Access point toe en Laptop (kan op examen anders zijn) 
+Access point G0/2
+
+P_A10
+Port 0 Aan en Auto
+Port 1 “Vlan10”
+Channel 1
+WPA2-PSK P@ssw0rd10
+AES encryptie 
+P_A20
+Port 0 Aan en Auto
+Port 1 “Vlan20”
+Channel 2
+WPA2-PSK P@ssw0rd20
+AES encryptie 
+P_A30
+Port 0 Aan en Auto
+Port 1 “Vlan30”
+Channel 3
+WPA2-PSK P@ssw0rd30
+AES encryptie 
+P_A50
+Port 0 Aan en Auto
+Port 1 “VLAN50”
+Channel 5
+WPA2-PSK P@ssw0rd50
+AES encryptie 
+
+PL_10, 20, 30, 50
+WPC300N in het midden erin doen, eerst rechter RJ45 poort eruit halen
+Connect bij PC Wireless
+
+P_PR30
+FastEthernet 0
+Port aan en Auto
+IP Static KIJK BIJ IP ADRESSEN PER PRINTER (172.16.30.30 255.255.255.0) 
+Gateway 172.16.30.1 eerste van vlan adres (dus XX.XX.vlan.1)
+DNS kijk webserver (11.11.11.14)
+
+P_Edge
+Enable
+conf term
+int g0/0/1
+description DHCP client
+ip address DHCP
+no sh
+
+Exit
+int g0/0/0
+no sh
+ip address 10.1.1.1 255.255.255.252         KIJK BIJ IP ADRESSEN VOOR P_EDGE
+
+IN P_MLS
+Enable
+conf term
+int g1/0/24
+no switchport
+ip addr 10.1.1.2 255.255.255.252
+no sh     
+KIJK BIJ IP ADRESSEN
+
+Enable
+conf term
+int vlan 10
+ip addr 172.16.10.1 255.255.255.0
+ip helper-address 11.11.11.14
+exit
+int vlan 20
+ip addr 172.16.20.1 255.255.255.0
+ip helper-address 11.11.11.14
+exit
+int vlan 30
+ip addr 172.16.30.1 255.255.255.0
+ip helper-address 11.11.11.14
+exit
+int vlan 40
+ip addr 172.16.40.1 255.255.255.0
+ip helper-address 11.11.11.14
+exit
+int vlan 50
+ip addr 172.16.50.1 255.255.255.0
+ip helper-address 11.11.11.14
+exit
+int vlan 99
+ip addr 172.16.99.1 255.255.255.0
+ip helper-address 11.11.11.14
+exit
+KIJK BIJ IP ADRESSEN 
+
+Enable 
+conf term
+ip dhcp excluded-address 172.16.10.0 172.16.10.49
+ip dhcp excluded-address 172.16.20.0 172.16.20.49
+ip dhcp excluded-address 172.16.30.0 172.16.30.49
+ip dhcp excluded-address 172.16.40.0 172.16.40.49
+ip dhcp excluded-address 172.16.50.0 172.16.50.49
+ip dhcp excluded-address 172.16.99.0 172.16.99.49
+
+
+ip dhcp pool VLAN10
+default-router 172.16.10.1
+dns-server 11.11.11.14
+network 172.16.10.0 255.255.255.0
+ip dhcp pool VLAN20
+default-router 172.16.20.1
+dns-server 11.11.11.14
+network 172.16.20.0 255.255.255.0
+ip dhcp pool VLAN30
+default-router 172.16.30.1
+dns-server 11.11.11.14
+network 172.16.30.0 255.255.255.0
+ip dhcp pool VLAN40
+default-router 172.16.40.1
+dns-server 11.11.11.14
+network 172.16.40.0 255.255.255.0
+ip dhcp pool VLAN50
+default-router 172.16.50.1
+dns-server 11.11.11.14
+network 172.16.50.0 255.255.255.0
+ip dhcp pool VLAN99
+default-router 172.16.99.1
+dns-server 11.11.11.14
+network 172.16.99.0 255.255.255.0
+
+KIJK BIJ IP ADRESSEN
+
+ISP 
+doe en
+sh run
+kopier iets wat op dit lijkt 
+hostname ISP
+!
+!
+!
+!
+ip dhcp excluded-address 12.12.12.1
+!
+ip dhcp pool ISP
+network 12.12.12.0 255.255.255.0
+default-router 12.12.12.1
+ga naar nieuwe ISP
+enable
+conf term
+plak het
+
+ROUTER0
+GLC-GE-100FX in de router doen rechts onder van de 4
+
+SERVER WEBSERVER
+Bovenste RJ45 eruit
+PT-HOST-NM-1FFE erin
+ROUTER0
+Na kabels trekken Copper Crossover voor P_Edge en fiber optic voor server moet je bij Config interface ze weer aan doen
+
+P_Edge
+Enable
+conf term
+int g0/0/0
+no sh
+end
+conf term
+int g0/0/1
+no sh
+description DHCP Client van ISP
+ip address dhcp
+
+ROUTER0
+Enable
+conf term
+int g0/0/0  (als je niet al erin zit)
+description verbinding met P_Edge en dhcp server
+ip addr 12.12.12.1 255.255.255.0   KIJK IN DIE ROZE CIRKEL en dan laatste 1
+no sh
+int g0/0/2
+ip addr 11.11.11.1 255.255.255.0
+
+SERVER0
+Ip configuration
+IP 11.11.11.14
+Subnet 255.255.255.0
+Dns 11.11.11.14
+Gateway 11.11.11.1
+ROUTER0
+Enable
+conf term
+Int lo 1
+ip addr 13.13.13.1 255.255.255.0  ip staat in de packet tracer onder “internet” 
+
+
+IN P_Edge
+
+Enable
+conf term
+ip route 172.16.40.0 255.255.255.0 10.1.1.2
+ip route 172.16.50.0 255.255.255.0 10.1.1.2
+ip route 172.16.99.0 255.255.255.0 10.1.1.2
+router ospf 1
+network 10.1.1.0 0.0.0.3 area 0
+network 12.12.12.0 0.0.0.255 area 0
+passive-interface g0/0/0
+default-information originate
+end
+
+
+KIJK DE Ips             do show ip route c
+
+ROUTER0
+
+Enable
+conf term
+ip route 0.0.0.0 0.0.0.0 lo 1
+router ospf 1
+network 11.11.11.0 0.0.0.255 area 0
+network 12.12.12.0 0.0.0.255 area 0
+network 13.13.13.0 0.0.0.255 area 0
+default-information originate
+
+Kijk de ips
+
+P_Edge
+
+Enable
+conf term
+ip route 0.0.0.0 0.0.0.0 12.12.12.1
