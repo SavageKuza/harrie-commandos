@@ -1,0 +1,29 @@
+$response = Read-Host "Do you want to show alerts? Press y for Yes or n for No"
+
+if ($response -eq "y") {
+    Write-Host "Showing alerts..."
+    $filePath = "C:\Users\zzzzzz\Downloads\alerts.txt"
+    $alerts = Get-Content $filePath
+    foreach ($alert in $alerts) {
+        Write-Host $alert
+    }
+}
+elseif ($response -eq "n") {
+    Write-Host "Not showing alerts."
+}
+else {
+    Write-Host "Invalid response. Please enter y for Yes or n for No."
+}
+
+
+en je moet zelf die pad opgeven in die script bij $filePath =
+
+
+
+$currentDate = Get-Date -Format "MM/dd/yyyy HH:mm:ss"
+Write-Host "Closing script... completed on $currentDate"
+
+
+ extra powershell scripts
+
+
